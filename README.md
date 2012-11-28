@@ -1,25 +1,20 @@
 # Getting Started
 
-To get openvpn working you have to create a .ovpn file and ssl-keys to ./data/config directory. 
-A HowTo for this you can find on [openvn.net](http://openvpn.net/howto.html)
+To get openvpn working you have to create a .ovpn file and ssl-keys to ./data/config directory. A HowTo for this you can find on [openvn.net](http://openvpn.net/howto.html)
 
 ## Installation
 
-Download and start OpenVPNPortable_x.x.x.paf.exe. It doesn't install anything
-on your system. It just downloads and extracts the needed files to one directory.
+Download and start OpenVPNPortable_x.x.x.paf.exe. It doesn't install anything on your system. It just downloads and extracts the needed files to one directory.
 
 ## Update
 
-Just start OpenVPNPortable_x.x.x.paf.exe again. It checks your version
-with the one on [sourceforge.net](http://sourceforge.net/projects/ovpnp/files/binpack/) and
-updates if needed.
+Just start OpenVPNPortable_x.x.x.paf.exe again. It checks your version with the one on [sourceforge.net](http://sourceforge.net/projects/ovpnp/files/binpack/) and updates if needed.
 
 ## Usage
 
 All you need to do is double click OpenVPNPortable.exe to start.
 
-If you want to connect on program startup, disable the splash or some 
-settings else, edit OpenVPNPortable.ini to change the behaviour of OpenVPNPortable.
+If you want to connect on program startup, disable the splash or some settings else, edit OpenVPNPortable.ini to change the behaviour of OpenVPNPortable.
 
 ## Last changes (1.8.0)
 
