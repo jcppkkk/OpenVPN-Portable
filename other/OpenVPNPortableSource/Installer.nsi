@@ -90,6 +90,7 @@ LangString runwarning ${LANG_ENGLISH} "Please close all instances of ${CLOSENAME
 
 ;=== Variables
 Var FOUNDPORTABLEAPPSPATH
+Var BINPACKURL
 
 Function .onInit
 	;StrCpy $FOUNDPORTABLEAPPSPATH ''
@@ -98,25 +99,44 @@ Function .onInit
 
 	IfErrors CheckLegacyDestination
 		StrCpy $INSTDIR "$R0${SHORTNAME}"
-		Goto InitDone
+		Goto CheckUrlOption
 
 	CheckLegacyDestination:
 		ClearErrors
 		${GetOptions} "$CMDLINE" "-o" $R0
 		IfErrors NoDestination
 			StrCpy $INSTDIR "$R0${SHORTNAME}"
-			Goto InitDone
+			Goto CheckUrlOption
 
 	NoDestination:
 		ClearErrors
 		${GetDrives} "HDD+FDD" GetDrivesCallBack
 		StrCmp $FOUNDPORTABLEAPPSPATH "" DefaultDestination
 			StrCpy $INSTDIR "$FOUNDPORTABLEAPPSPATH\${SHORTNAME}"
-			Goto InitDone
+			Goto CheckUrlOption
 		
 	DefaultDestination:
 		StrCpy $INSTDIR "$EXEDIR\${SHORTNAME}"
 
+	CheckUrlOption:
+		${GetOptions} "$CMDLINE" "/BINPACKURL=" $R0
+
+	IfErrors CheckSecondUrlOption
+		StrCpy $BINPACKURL "$R0"
+		Goto InitDone
+		
+	CheckSecondUrlOption:
+		ClearErrors
+		${GetOptions} "$CMDLINE" "url" $R0
+
+	IfErrors DefaultUrl
+		StrCpy $BINPACKURL "$R0"
+		Goto InitDone
+		
+	DefaultUrl:
+		ClearErrors
+		StrCpy $BINPACKURL "http://iweb.dl.sourceforge.net/project/ovpnp/binpack"
+	
 	InitDone:
 FunctionEnd
 
@@ -153,16 +173,25 @@ Section "!App Portable (required)"
 	SetOutPath $INSTDIR
 	File /r "..\..\*.*"
 	
-	;get the URL for the files.
-    inetc::get /SILENT "http://iweb.dl.sourceforge.net/project/ovpnp/binpack/current.txt" "$TEMP\new.txt" /END
-	Pop $R0 ;Get the return value
-		StrCmp $R0 "OK" 0 DownloadFailed
-			
-    FileOpen $0 "$TEMP\new.txt" r
-    FileRead $0 $1
-    FileClose $0
+	StrCmp "$BINPACKURL" "." CopyCurrent
+		StrCpy $2 "$BINPACKURL/current.txt"
+		
+		;get the latest version of the package.
+		inetc::get /SILENT "$2" "$TEMP\new.txt" /END
+		Pop $R0 ;Get the return value
+			StrCmp $R0 "OK" 0 DownloadFailed
+			Goto ReadFile
 	
-	Delete /REBOOTOK "$TEMP\new.txt"
+	CopyCurrent:
+		StrCpy $2 "$EXEDIR/current.txt"
+		CopyFiles "$2" "$TEMP/new.txt"
+		IfErrors DownloadFailed
+			
+	ReadFile:
+		FileOpen $0 "$TEMP\new.txt" r
+		FileRead $0 $1
+		FileClose $0
+		Delete /REBOOTOK "$TEMP\new.txt"
 	
 	StrCpy $2 "0.0.0"
 	
@@ -174,26 +203,31 @@ Section "!App Portable (required)"
 	Compare:
 		StrCmp "$1" "$2" End 0
 	
-	StrCpy $2 "http://iweb.dl.sourceforge.net/project/ovpnp/binpack/$1.zip"
-	
-    ;Download the files.
-    inetc::get /POPUP "" /CAPTION "Get latest openvpn binaries..." $2 "$TEMP\current.zip" /END
-	Pop $R0 ;Get the return value
-		StrCmp $R0 "OK" 0 DownloadFailed
+	StrCmp "$BINPACKURL" "." CopyBinpack
+		StrCpy $2 "$BINPACKURL/$1.zip"
 		
-			nsUnzip::Extract "/d=$INSTDIR" /u "$TEMP\current.zip" /END
-			Delete /REBOOTOK "$TEMP\current.zip"
-			
-			FileOpen $0 $INSTDIR\current.txt w
-			FileWrite $0 $1
-			FileClose $0
-			
-			Goto End
+		;Download the package.
+		inetc::get /POPUP "" /CAPTION "Get latest openvpn binaries..." $2 "$TEMP\current.zip" /END
+		Pop $R0 ;Get the return value
+			StrCmp $R0 "OK" Extract DownloadFailed
+				
+	CopyBinpack:
+		StrCpy $2 "$EXEDIR/$1.zip"
+		CopyFiles "$2" "$TEMP\current.zip"
+		IfErrors DownloadFailed
+		
+	Extract:
+		nsUnzip::Extract "/d=$INSTDIR" /u "$TEMP\current.zip" /END
+		Delete /REBOOTOK "$TEMP\current.zip"
+		
+		FileOpen $0 $INSTDIR\current.txt w
+		FileWrite $0 $1
+		FileClose $0
+		
+		Goto End
 	
 	DownloadFailed:
 		MessageBox MB_OK|MB_ICONSTOP "Unable to download file $2 ($R0)"
-		Delete $INSTDIR
-		Abort
 	
 	End:
 SectionEnd
