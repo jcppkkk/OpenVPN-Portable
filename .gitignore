@@ -1,0 +1,14 @@
+# Directories
+.svn/
+config/
+configBackup/
+log/
+OpenVPNPortable/
+temp/
+
+# Files
+*.exe
+*.o
+*.res
+settings
+*~
