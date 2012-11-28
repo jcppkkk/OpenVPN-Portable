@@ -21,7 +21,7 @@ All you need to do is double click OpenVPNPortable.exe to start.
 If you want to connect on program startup, disable the splash or some 
 settings else, edit OpenVPNPortable.ini to change the behaviour of OpenVPNPortable.
 
-## Last changes
+## Last changes (1.8.0)
 
 * Installer doesn't contain the openvpn binaries anymore.
 * Auto download a zip with the newest openvpn binaries during install.
