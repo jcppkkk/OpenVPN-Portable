@@ -2,7 +2,7 @@
        !define NAME "${PNAME}"
        !define FRIENDLYNAME "OpenVPN Portable"
        !define APP "OpenVPN"
-       !define VER "1.6.7.0"	;Version of the Portable App, Version of OpenVPN is found on .\app\appinfo\appinfo.ini
+       !define VER "1.7.7.0"	;Version of the Portable App, Version of OpenVPN is found on .\app\appinfo\appinfo.ini
        ;!define SUBVER "RC4"
        !define WEBSITE "http://www.sourceforge.net/projects/ovpnp"
        !define DEFAULTAPPDIR "app\bin"

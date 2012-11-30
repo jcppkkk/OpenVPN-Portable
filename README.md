@@ -17,8 +17,9 @@ All you need to do is double click OpenVPNPortable.exe to start.
 
 If you want to connect on program startup, disable the splash or some settings else, edit OpenVPNPortable.ini to change the behaviour of OpenVPNPortable.
 
-## Last changes (1.8.1)
+## Last changes (1.8.2)
 * Command line option to overwrite default URL for downloading openvpn binaries
+* Fix driver install on 64-bit Systems
 
 # How to build
 ## Requires
@@ -40,5 +41,4 @@ NSIS needs some plugins. You can find it on [Plugins-Site](http://nsis.sourcefor
 * Compile the openvpn-gui and copy the binary to ./app/bin/openvpn-gui.exe. 
 	Refer the readme on the gui source directory for build instructions.
 	Take the source from this svn repository. It's optimized for portable use.
-* Compile the OpenVPNPortable.nsi and copy the binary to ./
 * Execute the CreatePAF.vbs

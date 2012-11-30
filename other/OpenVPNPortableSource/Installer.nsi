@@ -23,8 +23,8 @@
 
 !define NAME "OpenVPN Portable"
 !define SHORTNAME "OpenVPNPortable"
-!define VERSION "1.8.0.0"
-!define FILENAME "OpenVPNPortable_1.8.0"
+!define VERSION "1.8.2.0"
+!define FILENAME "OpenVPNPortable_1.8.2"
 !define CHECKRUNNING "openvpn-gui.exe"
 !define CLOSENAME "OpenVPN"
 
