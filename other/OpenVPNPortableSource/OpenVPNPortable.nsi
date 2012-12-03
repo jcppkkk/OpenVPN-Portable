@@ -190,7 +190,6 @@ Section "Main"
             StrCmp "$0" "0" InstallTaps
 			
 			${If} ${UAC_IsInnerInstance}
-			${AndIf} ${UAC_IsAdmin}
 				Goto UninstallTaps
 			${Else}
 				Goto Launch
@@ -218,8 +217,6 @@ Section "Main"
 		${AndIfNot} ${UAC_IsAdmin}
 			MessageBox MB_OK|MB_ICONEXCLAMATION `Error by installing virtual network drivers. Please start this app as a user with admin rights.`
 			Goto End
-		${Else}
-			MessageBox MB_YESNO|MB_ICONEXCLAMATION `Error by installing virtual network drivers. Retry (This time with admin rights request)?` IDNO End
 		${EndIf}
 		
 		!insertmacro UAC_RunElevated
@@ -264,8 +261,6 @@ Section "Main"
 		${AndIfNot} ${UAC_IsAdmin}
 			MessageBox MB_OK|MB_ICONEXCLAMATION `Error by uninstalling virtual network drivers. Please start this app as a user with admin rights.`
 			Goto End
-		${Else}
-			MessageBox MB_YESNO|MB_ICONEXCLAMATION `Error by uninstalling virtual network drivers. Retry (This time with admin rights request)?` IDNO End
 		${EndIf}
 	
 		!insertmacro UAC_RunElevated
