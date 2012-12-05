@@ -58,6 +58,7 @@ CRCCheck On
 ;SilentInstall Silent
 AutoCloseWindow True
 SetCompressor /SOLID LZMA
+RequestExecutionLevel user
 
 ;Get installation folder from registry if available
 
