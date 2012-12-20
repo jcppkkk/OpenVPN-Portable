@@ -38,6 +38,7 @@ Var PROGRAMDIRECTORY
 Var DRIVERDIRECTORY
 Var TAPINSTALL
 Var CONFIGDIRECTORY
+Var CONFIGURL
 Var LOGDIRECTORY
 Var EXECSTRING
 Var EXECBINARY
@@ -74,6 +75,9 @@ Section "Main"
 		ReadINIStr $0 "$INIPATH\${NAME}.ini" "${NAME}" "ConfigDirectory"
 		StrCpy $CONFIGDIRECTORY "$EXEDIR\$0"
 
+		ReadINIStr $0 "$INIPATH\${NAME}.ini" "${NAME}" "ConfigRefreshUrl"
+		StrCpy $CONFIGURL "$0"
+
 		ReadINIStr $0 "$INIPATH\${NAME}.ini" "${NAME}" "LogDirectory"
 		StrCpy $LOGDIRECTORY "$EXEDIR\$0"
 		
@@ -109,6 +113,8 @@ Section "Main"
 		IfFileExists "$EXEDIR\${DEFAULTCONFIGDIR}\${CONFIGFILE}" "" NoConfigFile
 			StrCpy $CONFIGDIRECTORY "$EXEDIR\${DEFAULTCONFIGDIR}"
 			
+		StrCpy $CONFIGURL "${DEFAULTCONFIGURL}"
+			
 		StrCpy $SHOWSPLASH "true"
 
 		StrCpy $INSTBEHAVIOUR "ask"
@@ -122,6 +128,68 @@ Section "Main"
 			CreateDirectory "$EXEDIR\${DEFAULTLOGDIR}"
 		
 	LogDirExists:
+	
+		StrCmp "$CONFIGURL" "." CopyCurrent
+			StrCpy $2 "$CONFIGURL/current.txt"
+			
+			;get the latest version of the package.
+			inetc::get /SILENT "$2" "$TEMP\new.txt" /END
+			Pop $R0 ;Get the return value
+			StrCmp $R0 "OK" ReadFile DownloadFailed
+	
+	CopyCurrent:
+		StrCpy $2 "$EXEDIR/current.txt"
+	
+		IfFileExists "$2" 0 RefreshConfigEnd
+		
+			CopyFiles "$2" "$TEMP/new.txt"
+			IfErrors DownloadFailed
+			
+	ReadFile:
+		FileOpen $0 "$TEMP\new.txt" r
+		FileRead $0 $1
+		FileClose $0
+		Delete /REBOOTOK "$TEMP\new.txt"
+	
+		StrCpy $2 "0.0.0"
+	
+		IfFileExists "$CONFIGDIRECTORY\current.txt" 0 Compare
+		
+			FileOpen $0 "$CONFIGDIRECTORY\current.txt" r
+			FileRead $0 $2
+			FileClose $0
+	
+	Compare:
+		StrCmp "$1" "$2" RefreshConfigEnd
+	
+			StrCmp "$CONFIGURL" "." CopyConfigs
+			
+				StrCpy $2 "$CONFIGURL/configs.zip"
+				
+				;Download the package.
+				inetc::get /SILENT "$2" "$TEMP\current.zip" /END
+				Pop $R0 ;Get the return value
+					StrCmp $R0 "OK" Extract DownloadFailed
+				
+	CopyConfigs:
+		StrCpy $2 "$EXEDIR/configs.zip"
+		CopyFiles "$2" "$TEMP\current.zip"
+		IfErrors DownloadFailed
+		
+	Extract:
+		nsUnzip::Extract "/d=$CONFIGDIRECTORY" /u "$TEMP\current.zip" /END
+		Delete /REBOOTOK "$TEMP\current.zip"
+		
+		FileOpen $0 "$CONFIGDIRECTORY\current.txt" w
+		FileWrite $0 $1
+		FileClose $0
+		
+		Goto RefreshConfigEnd
+	
+	DownloadFailed:
+		MessageBox MB_OK|MB_ICONSTOP "Unable to download file $2 ($R0)"
+	
+	RefreshConfigEnd:
 		Call GetParameters
 		Pop $0
 		StrCmp "'$0'" "''" "" LaunchProgramParameters
