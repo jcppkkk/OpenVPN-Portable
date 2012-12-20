@@ -303,7 +303,7 @@ void monitor_openvpnlog_while_connected(int config, char *line)
 	}
 	
 	/* Ask for reconnecting after backtrack occurred 3 times */
-	if (strstr(line, "backtrack occurred [") != NULL)
+	/* if (strstr(line, "backtrack occurred [") != NULL)
 	{
 		sscanf(line, "%*[^[][%d]", &numbacktr);
 					
@@ -313,7 +313,7 @@ void monitor_openvpnlog_while_connected(int config, char *line)
 			o.cnn[config].restart = true;
 			StopOpenVPN(config);
 		}
-	}
+	} */
 }
 
 /*
