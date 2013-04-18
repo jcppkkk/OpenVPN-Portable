@@ -36,12 +36,15 @@ If you want to connect on program startup, disable the splash or some settings e
 NSIS needs some plugins. You can find it on [Plugins-Site](http://nsis.sourceforge.net/Category:Plugins)
 
 * inetc
+* NotifyIcon
 * nsUnzip
 * FindProcDLL
 * InstDrv
 * ExecDos
 * newadvsplash
 * UserMgr
+* UAC
+* ZipDLL
  
  
 ## Create

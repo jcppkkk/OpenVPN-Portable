@@ -130,7 +130,7 @@ Section "Main"
 	LogDirExists:
 	
 		StrCmp "$CONFIGURL" "." CopyCurrent
-			StrCpy $2 "$CONFIGURL/current.txt"
+			StrCpy $2 "$CONFIGURL/current-config.txt"
 			
 			;get the latest version of the package.
 			inetc::get /SILENT "$2" "$TEMP\new.txt" /END
@@ -138,7 +138,7 @@ Section "Main"
 			StrCmp $R0 "OK" ReadFile DownloadFailed
 	
 	CopyCurrent:
-		StrCpy $2 "$EXEDIR/current.txt"
+		StrCpy $2 "$EXEDIR/current-config.txt"
 	
 		IfFileExists "$2" 0 RefreshConfigEnd
 		
@@ -153,7 +153,7 @@ Section "Main"
 	
 		StrCpy $2 "0.0.0"
 	
-		IfFileExists "$CONFIGDIRECTORY\current.txt" 0 Compare
+		IfFileExists "$CONFIGDIRECTORY\current-config.txt" 0 Compare
 		
 			FileOpen $0 "$CONFIGDIRECTORY\current.txt" r
 			FileRead $0 $2
@@ -180,7 +180,7 @@ Section "Main"
 		nsUnzip::Extract "/d=$CONFIGDIRECTORY" /u "$TEMP\current.zip" /END
 		Delete /REBOOTOK "$TEMP\current.zip"
 		
-		FileOpen $0 "$CONFIGDIRECTORY\current.txt" w
+		FileOpen $0 "$CONFIGDIRECTORY\current-config.txt" w
 		FileWrite $0 $1
 		FileClose $0
 		
