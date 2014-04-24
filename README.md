@@ -52,3 +52,6 @@ NSIS needs some plugins. You can find it on [Plugins-Site](http://nsis.sourcefor
 	Refer the readme on the gui source directory for build instructions.
 	Take the source from this svn repository. It's optimized for portable use.
 * Execute the CreatePAF.vbs
+=======
+OpenVPN-Portable
+================
