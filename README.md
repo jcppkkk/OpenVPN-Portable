@@ -35,16 +35,16 @@ If you want to connect on program startup, disable the splash or some settings e
 ### NSIS plugins
 NSIS needs some plugins. You can find it on [Plugins-Site](http://nsis.sourceforge.net/Category:Plugins)
 
-* inetc
-* NotifyIcon
-* nsUnzip
-* FindProcDLL
-* InstDrv
-* ExecDos
-* newadvsplash
-* UserMgr
-* UAC
-* ZipDLL
+* [Inetc](http://nsis.sourceforge.net/Inetc_plug-in)
+* [NotifyIcon](http://nsis.sourceforge.net/NotifyIcon_plug-in)
+* [nsUnzip](http://nsis.sourceforge.net/NsUnzip_plugin)
+* [FindProcDLL](http://nsis.sourceforge.net/FindProcDLL_plug-in)
+* [InstDrv](http://nsis.sourceforge.net/InstDrv_plug-in)
+* [ExecDos](http://nsis.sourceforge.net/ExecDos_plug-in)
+* [NewAdvSplash](http://nsis.sourceforge.net/NewAdvSplash_plug-in)
+* [UserMgr](http://nsis.sourceforge.net/UserMgr_plug-in)
+* [UAC](http://nsis.sourceforge.net/UAC_plug-in)
+* [ZipDLL](http://nsis.sourceforge.net/ZipDLL_plug-in)
  
  
 ## Create
