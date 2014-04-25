@@ -59,7 +59,6 @@ RequestExecutionLevel user
 ;=== Include
 !include MUI.nsh
 !include FileFunc.nsh
-!include ZipDLL.nsh
 
 !insertmacro GetOptions
 !insertmacro GetDrives
@@ -217,7 +216,11 @@ Section "!App Portable (required)"
 		IfErrors DownloadFailed
 		
 	Extract:
-		nsUnzip::Extract "/d=$INSTDIR" /u "$TEMP\current.zip" /END
+		nsisunz::UnzipToLog "$TEMP\current.zip" "$INSTDIR"
+		Pop $R0
+		StrCmp $R0 "success" +2
+			DetailPrint "$R0" ;print error message to log
+
 		Delete /REBOOTOK "$TEMP\current.zip"
 		
 		FileOpen $0 $INSTDIR\current.txt w
