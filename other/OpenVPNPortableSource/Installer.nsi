@@ -53,8 +53,8 @@ BrandingText "OpenVPN Portable - Your private network, Anywhere™"
 ;SetCompress off
 SetCompressor /SOLID lzma
 CRCCheck on
-AutoCloseWindow True
 RequestExecutionLevel user
+ShowInstDetails show
 
 ;=== Include
 !include MUI.nsh
@@ -77,6 +77,7 @@ Icon "${SHORTNAME}.ico"
 ;=== Pages and their order
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
+!define MUI_FINISHPAGE_NOAUTOCLOSE
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
