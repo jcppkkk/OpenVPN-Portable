@@ -2,21 +2,14 @@
 Option Explicit
 
 Dim WSHShell, fso, oArgs
-Dim root, target, version, nversion, upx, reshack, directory, fileList, file
-Dim line, FileIn, FileOut, vsettings, ges_file, tempdir, temp, sevenzip, nsis
-'Dim Datei, Text, Txt, i, arrSort, arrTest(), oArgs
+Dim root, target, directory, fileList, file
+Dim line, FileIn, FileOut, vsettings, tempdir, temp, nsis
 
 Set WSHShell = WScript.CreateObject("WScript.Shell") 
 Set fso      = WScript.CreateObject("Scripting.FileSystemObject") 
 set oArgs    = Wscript.Arguments
-'Set WSHShell = WScript.CreateObject("WScript.Shell")
-'Set fso      = WScript.CreateObject("Scripting.FileSystemObject")
 
-'root="c:\vss\projektmappe_landis\scr_firmware"
 root=fso.GetFolder(".")
-'target="K:\ET\SCR1\SCR_FIRMWARE"
-'version="0.2.0"
-sevenzip="C:\Program Files\7-Zip\7z.exe"
 reshack="c:\ResHacker\ResHacker.exe"
 directory="OpenVPNPortable"
 nsis="C:\Program Files (x86)\NSIS\Unicode\makensis.exe"
@@ -30,8 +23,6 @@ If fso.FileExists( root & "\settings" ) then
 		
 		vsettings = Split( line, "=" )
 		
-		'If vsettings(0) = "version" then version=vsettings(1)
-		If vsettings(0) = "sevenzip" then sevenzip=vsettings(1)
 		If vsettings(0) = "reshack" then reshack=vsettings(1)
 		If vsettings(0) = "nsis" then nsis=vsettings(1)
 		If vsettings(0) = "directory" then directory=vsettings(1)
@@ -41,28 +32,16 @@ FileIn.Close
 Set FileIn = nothing
 End If
 
-If not fso.FileExists(sevenzip) then sevenzip = InputBox("7z.exe (Please full path incl. file)?")
-'If not fso.FileExists(reshack) then reshack = InputBox("reshack.exe (Please full path incl. file)?")
 If not fso.FileExists(nsis) then nsis = InputBox("makensis.exe (Please full path incl. file)?")
 
-'*******************************************************************************************************
-'nversion = InputBox("Version (Nothing is equal to " & version & ").")
-'If not nversion = "" then version = nversion
-
-'ges_file=directory & "_" & version & ".paf.exe"
-'*******************************************************************************************************
 'Save settings
 Set FileOut = fso.CreateTextFile(root & "\settings", true)
-'FileOut.WriteLine( "version=" & version )
-FileOut.WriteLine( "sevenzip=" & sevenzip )
-FileOut.WriteLine( "reshack=" & reshack )
 FileOut.WriteLine( "nsis=" & nsis )
 FileOut.WriteLine( "directory=" & directory )
 FileOut.Close
 Set FileOut = nothing
 
 
-'WSHShell.Run "mkdir %TEMP%\" & directory, , true
 temp=WshShell.ExpandEnvironmentStrings("%TEMP%")
 tempdir= temp & "\" & directory
 
@@ -71,9 +50,6 @@ fso.CreateFolder tempdir
 fso.CreateFolder tempdir & "\app"
 fso.CreateFolder tempdir & "\app\AppInfo"
 fso.CreateFolder tempdir & "\app\bin"
-'fso.CreateFolder tempdir & "\app\driver"
-'fso.CreateFolder tempdir & "\app\driver\win32"
-'fso.CreateFolder tempdir & "\app\driver\win64"
 fso.CreateFolder tempdir & "\data"
 fso.CreateFolder tempdir & "\data\config"
 fso.CreateFolder tempdir & "\data\log"
@@ -85,9 +61,6 @@ fso.CreateFolder tempdir & "\other\TinyOpenVPNGuiNSIS"
 fso.CopyFile root & "\app\AppInfo\*.*", tempdir & "\app\AppInfo\", true
 
 fso.CopyFile root & "\app\bin\*.*", tempdir & "\app\bin\", true
-'fso.CopyFile root & "\app\driver\win32\*.*", tempdir & "\app\driver\win32\", true
-'fso.CopyFile root & "\app\driver\win64\*.*", tempdir & "\app\driver\win64\", true
-'fso.CopyFile root & "\data\config\*.*", tempdir & "\data\config\", true
 fso.CopyFile root & "\other\openvpn-gui-source\*.*", tempdir & "\other\openvpn-gui-source\", true
 fso.CopyFile root & "\other\OpenVPNPortableSource\*.*", tempdir & "\other\OpenVPNPortableSource\", true
 fso.CopyFile root & "\other\TinyOpenVPNGuiNSIS\*.*", tempdir & "\other\TinyOpenVPNGuiNSIS\", true
@@ -100,23 +73,6 @@ delFileIfExists tempdir & "\other\openvpn-gui-source\*.res"
 delFileIfExists tempdir & "\other\OpenVPNPortableSource\*.exe"
 delFileIfExists tempdir & "\other\TinyOpenVPNGuiNSIS\*.exe"
 
-'*******************************************************************************************************
-'delFileIfExists temp & "\" & ges_file
-
-'If fso.FileExists(sevenzip) then
-'	WSHShell.Run """" & sevenzip & """ a -aoa -sfx7z.sfx -r """ & temp & "\" & ges_file & """ """ & tempdir & """", , true
-'Else
-'	MsgBox "File """ & sevenzip & """ does not exist. Script ends"
-'	WScript.Quit
-'End If
-
-'If fso.FileExists(reshack) then
-'	WSHShell.Run """" & reshack & """ -addoverwrite """ & temp & "\" & ges_file & """, """ & root & "\" & ges_file & """, """ & root & "\other\OpenVPNPortableSource\OpenVPNPortable.ico"", icon, 1, 1033", , true
-'Else
-'	MsgBox("File """ & reshack & """ does not exist. Script ends")
-'	WScript.Quit
-'End If
-'*******************************************************************************************************
 
 If fso.FileExists(nsis) then
 '	MsgBox """" & nsis & """ /NOCD """ & tempdir & "\other\OpenVPNPortableSource\Installer.nsi"""
