@@ -44,7 +44,7 @@ NSIS needs some plugins. You can find it on [Plugins-Site](http://nsis.sourcefor
 * [NewAdvSplash](http://nsis.sourceforge.net/NewAdvSplash_plug-in)
 * [UserMgr](http://nsis.sourceforge.net/UserMgr_plug-in)
 * [UAC](http://nsis.sourceforge.net/UAC_plug-in)
-* [ZipDLL](http://nsis.sourceforge.net/ZipDLL_plug-in)
+* [Nsisunz](http://nsis.sourceforge.net/Nsisunz_plug-in)
  
  
 ## Create
