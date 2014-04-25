@@ -16,10 +16,10 @@ set oArgs    = Wscript.Arguments
 root=fso.GetFolder(".")
 'target="K:\ET\SCR1\SCR_FIRMWARE"
 'version="0.2.0"
-sevenzip="c:\Program Files\7-Zip\7z.exe"
+sevenzip="C:\Program Files\7-Zip\7z.exe"
 reshack="c:\ResHacker\ResHacker.exe"
 directory="OpenVPNPortable"
-nsis="c:\Program Files\nsis\makensis.exe"
+nsis="C:\Program Files (x86)\NSIS\Unicode\makensis.exe"
 
 'Load settings
 If fso.FileExists( root & "\settings" ) then
@@ -51,6 +51,16 @@ If not fso.FileExists(nsis) then nsis = InputBox("makensis.exe (Please full path
 
 'ges_file=directory & "_" & version & ".paf.exe"
 '*******************************************************************************************************
+'Save settings
+Set FileOut = fso.CreateTextFile(root & "\settings", true)
+'FileOut.WriteLine( "version=" & version )
+FileOut.WriteLine( "sevenzip=" & sevenzip )
+FileOut.WriteLine( "reshack=" & reshack )
+FileOut.WriteLine( "nsis=" & nsis )
+FileOut.WriteLine( "directory=" & directory )
+FileOut.Close
+Set FileOut = nothing
+
 
 'WSHShell.Run "mkdir %TEMP%\" & directory, , true
 temp=WshShell.ExpandEnvironmentStrings("%TEMP%")
@@ -125,16 +135,6 @@ Else
 	MsgBox("File """ & nsis & """ does not exist. Script ends")
 	WScript.Quit
 End If
-
-'Save settings
-Set FileOut = fso.CreateTextFile(root & "\settings", true)
-'FileOut.WriteLine( "version=" & version )
-FileOut.WriteLine( "sevenzip=" & sevenzip )
-FileOut.WriteLine( "reshack=" & reshack )
-FileOut.WriteLine( "nsis=" & nsis )
-FileOut.WriteLine( "directory=" & directory )
-FileOut.Close
-Set FileOut = nothing
 
 MsgBox "Script successful finished"
 
