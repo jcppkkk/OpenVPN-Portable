@@ -9,6 +9,13 @@ Set WSHShell = WScript.CreateObject("WScript.Shell")
 Set fso      = WScript.CreateObject("Scripting.FileSystemObject") 
 set oArgs    = Wscript.Arguments
 
+function Enquote(sSource)
+  Enquote = chr(34) & sSource & chr(34)
+end function
+function WSHShellRun(exe, arg)
+  WSHShell.Run Enquote(exe) & " " & Enquote(arg), , true
+end function
+
 root=fso.GetFolder(".")
 reshack="c:\ResHacker\ResHacker.exe"
 directory="OpenVPNPortable"
@@ -75,16 +82,15 @@ delFileIfExists tempdir & "\other\TinyOpenVPNGuiNSIS\*.exe"
 
 
 If fso.FileExists(nsis) then
-'	MsgBox """" & nsis & """ /NOCD """ & tempdir & "\other\OpenVPNPortableSource\Installer.nsi"""
-	WSHShell.Run """" & nsis & """ """ & tempdir & "\other\OpenVPNPortableSource\OpenVPNPortable.nsi""", , true
+	WSHShellRun nsis, tempdir & "\other\OpenVPNPortableSource\OpenVPNPortable.nsi"
 	fso.CopyFile tempdir & "\other\OpenVPNPortableSource\OpenVPNPortable.exe", tempdir & "\", true
     fso.DeleteFile tempdir & "\other\OpenVPNPortableSource\*.exe", true
     
-	WSHShell.Run """" & nsis & """ """ & tempdir & "\other\TinyOpenVPNGuiNSIS\TinyOpenVPNGui.nsi""", , true
+    WSHShellRun nsis, tempdir & "\other\TinyOpenVPNGuiNSIS\TinyOpenVPNGui.nsi"
 	fso.CopyFile tempdir & "\other\TinyOpenVPNGuiNSIS\TinyOpenVPNGui.exe", tempdir & "\app\bin\", true
     fso.DeleteFile tempdir & "\other\TinyOpenVPNGuiNSIS\*.exe", true
 
-	WSHShell.Run """" & nsis & """ """ & tempdir & "\other\OpenVPNPortableSource\Installer.nsi""", , true
+	WSHShellRun nsis, tempdir & "\other\OpenVPNPortableSource\Installer.nsi"
 	fso.CopyFile tempdir & "\other\OpenVPNPortableSource\*.paf.exe", root & "\", true
     fso.DeleteFile tempdir & "\other\OpenVPNPortableSource\*.exe", true
 Else
