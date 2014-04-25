@@ -29,7 +29,7 @@ If you want to connect on program startup, disable the splash or some settings e
 ## Requires
 * MinGW and MSYS from [mingw.org](http://www.mingw.org/)
 * OpenSSL from [http://www.slproweb.com/products/Win32OpenSSL.html](http://www.slproweb.com/products/Win32OpenSSL.html)
-* NSIS from [sourceforge.net](http://nsis.sourceforge.net/)
+* Unicode NSIS from [https://code.google.com/p/unsis/](https://code.google.com/p/unsis/)
  
  
 ### NSIS plugins
